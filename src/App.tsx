@@ -21,7 +21,7 @@ function App() {
 					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} />
 				</section>
 				{sidebarState == "landing" && <LandingPageSidebar onPhotoSelected={handlePhotoSelected} />}
-				{sidebarState == "adjust" && <AdjustPageSidebar transform={photoTransform} setTransform={setPhotoTransform} />}
+				{sidebarState == "adjust" && <AdjustPageSidebar onPhotoSelected={handlePhotoSelected} transform={photoTransform} setTransform={setPhotoTransform} />}
 			</div>
 		</main>
 	);

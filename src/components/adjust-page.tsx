@@ -10,9 +10,19 @@ type TransformType = {
 type AdjustPageProps = {
 	transform: TransformType;
 	setTransform: React.Dispatch<React.SetStateAction<TransformType>>;
+	onPhotoSelected: (img: HTMLImageElement) => void;
 };
 
-export default function AdjustPageSidebar({ transform, setTransform }: AdjustPageProps) {
+export default function AdjustPageSidebar({ transform, setTransform, onPhotoSelected }: AdjustPageProps) {
+	function handleChangePhoto(e: React.ChangeEvent<HTMLInputElement>) {
+		const file = e.target.files?.[0];
+		if (!file) return;
+
+		const img = new Image();
+		img.onload = () => onPhotoSelected(img);
+		img.src = URL.createObjectURL(file);
+	}
+
 	return (
 		<section className="h-[24em] p-5 w-1/2 flex flex-col gap-3 justify-between ">
 			<article>
@@ -43,7 +53,7 @@ export default function AdjustPageSidebar({ transform, setTransform }: AdjustPag
 					</h3>
 				</div>
 				<div className="*:cursor-pointer border-purple-700 border p-5 relative text-purple-900 rounded-xl w-fit">
-					<input type="file" className="absolute inset-0 z-10 opacity-0" />
+					<input onChange={handleChangePhoto} type="file" className="absolute inset-0 z-10 opacity-0" />
 					<h3 className="flex items-center gap-3">
 						<Camera />
 						Change photo
