@@ -7,7 +7,7 @@ import AdjustPageSidebar from "./components/adjust-page";
 function App() {
 	const [sidebarState, setSidebarState] = useState<"landing" | "adjust" | "ready">("landing");
 	const [userPhoto, setUserPhoto] = useState<HTMLImageElement | null>(null);
-	const [photoTransform, setPhotoTransform] = useState({ x: 0, y: 0, scale: 1, rotate: 0 });
+	const [photoTransform, setPhotoTransform] = useState({ x: 0, y: 0, scale: 100, rotate: 0 });
 
 	function handlePhotoSelected(img: HTMLImageElement) {
 		setUserPhoto(img);
@@ -21,7 +21,7 @@ function App() {
 					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} />
 				</section>
 				{sidebarState == "landing" && <LandingPageSidebar onPhotoSelected={handlePhotoSelected} />}
-				{sidebarState == "adjust" && <AdjustPageSidebar />}
+				{sidebarState == "adjust" && <AdjustPageSidebar transform={photoTransform} setTransform={setPhotoTransform} />}
 			</div>
 		</main>
 	);

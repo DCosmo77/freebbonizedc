@@ -1,6 +1,18 @@
 import { Camera, SquareDimensions } from "lucide-react";
 
-export default function AdjustPageSidebar() {
+type TransformType = {
+	x: number;
+	y: number;
+	scale: number;
+	rotate: number;
+};
+
+type AdjustPageProps = {
+	transform: TransformType;
+	setTransform: React.Dispatch<React.SetStateAction<TransformType>>;
+};
+
+export default function AdjustPageSidebar({ transform, setTransform }: AdjustPageProps) {
 	return (
 		<section className="h-[24em] p-5 w-1/2 flex flex-col gap-3 justify-between ">
 			<article>
@@ -9,17 +21,17 @@ export default function AdjustPageSidebar() {
 			<ul>
 				<li className="outline outline-gray-600/50 my-3 rounded-md text-center shadow-xl p-5 w-full">
 					<label htmlFor="scale" className="font-semibold">
-						Scale (100%)
+						Scale ({transform.scale} %)
 					</label>
 					<br />
-					<input type="range" className="w-full accent-purple-800" min={0} max={200} id="scale" name="scale" />
+					<input type="range" className="w-full accent-purple-800" value={transform.scale} onChange={(e) => setTransform((t) => ({ ...t, scale: +e.target.value }))} min={0} max={200} id="scale" name="scale" />
 				</li>
 				<li className="outline outline-gray-600/50 my-3 rounded-md text-center shadow-xl p-5 w-full">
 					<label htmlFor="rotate" className="font-semibold">
-						Rotate (0 deg)
+						Rotate ({transform.rotate} deg)
 					</label>
 					<br />
-					<input type="range" className="w-full accent-purple-800" min={-360} max={360} id="rotate" name="rotate" />
+					<input type="range" className="w-full accent-purple-800" value={transform.rotate} min={-180} max={180} onChange={(e) => setTransform((t) => ({ ...t, rotate: +e.target.value }))} id="rotate" name="rotate" />
 				</li>
 			</ul>
 			<div className="w-full  *:grow flex gap-2">

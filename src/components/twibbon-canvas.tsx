@@ -22,7 +22,7 @@ export default function TwibbonCanvas({ userPhoto, transform, frameSrc, size = 5
 			ctx?.save();
 			ctx?.translate(size / 2 + transform.x, size / 2 + transform.y);
 			ctx?.rotate((transform.rotate * Math.PI) / 180);
-			ctx?.scale(transform.scale, transform.scale);
+			ctx?.scale(transform.scale / 100, transform.scale / 100);
 			ctx?.drawImage(userPhoto, -userPhoto.width / 2, -userPhoto.height / 2);
 			ctx?.restore();
 		}
