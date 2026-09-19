@@ -18,7 +18,7 @@ function App() {
 		<main className="w-screen h-screen flex justify-center items-center">
 			<div className="h-fit flex p-20 justify-center gap-10 items-center">
 				<section className="w-96">
-					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} />
+					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} setTransform={setPhotoTransform} />
 				</section>
 				{sidebarState == "landing" && <LandingPageSidebar onPhotoSelected={handlePhotoSelected} />}
 				{sidebarState == "adjust" && <AdjustPageSidebar onPhotoSelected={handlePhotoSelected} transform={photoTransform} setTransform={setPhotoTransform} />}

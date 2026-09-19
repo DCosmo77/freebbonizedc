@@ -1,15 +1,23 @@
 import { useEffect, useRef } from "react";
 
-export default function TwibbonCanvas({ userPhoto, transform, frameSrc, size = 500 }) {
+type TransformType = {
+	x: number;
+	y: number;
+	scale: number;
+	rotate: number;
+};
+
+type CanvasProps = {
+	transform: TransformType;
+	setTransform: React.Dispatch<React.SetStateAction<TransformType>>;
+	userPhoto: HTMLImageElement | null;
+	frameSrc: string;
+};
+
+export default function TwibbonCanvas({ userPhoto, transform, frameSrc, setTransform }: CanvasProps) {
+	const size = 500;
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const frameRef = useRef(new Image());
-
-	useEffect(() => {
-		frameRef.current.src = frameSrc;
-		frameRef.current.onload = draw;
-	}, [frameSrc]);
-
-	useEffect(draw, [userPhoto, transform]);
 
 	function draw() {
 		const canvas = canvasRef.current;
@@ -29,5 +37,42 @@ export default function TwibbonCanvas({ userPhoto, transform, frameSrc, size = 5
 		ctx?.drawImage(frameRef.current, 0, 0, size, size);
 	}
 
-	return <canvas ref={canvasRef} width={size} height={size} className="w-full h-auto" />;
+	useEffect(() => {
+		frameRef.current.src = frameSrc;
+		frameRef.current.onload = draw;
+	}, [frameSrc]);
+
+	useEffect(draw, [userPhoto, transform]);
+
+	const isDragging = useRef(false);
+	const lastPos = useRef({ x: 0, y: 0 });
+
+	function handleDragDown(e: React.PointerEvent<HTMLCanvasElement>) {
+		isDragging.current = true;
+		lastPos.current = { x: e.clientX, y: e.clientY };
+		e.currentTarget.setPointerCapture(e.pointerId);
+	}
+
+	function handleDragMove(e: React.PointerEvent<HTMLCanvasElement>) {
+		if (!isDragging.current) return;
+
+		const dx = e.clientX - lastPos.current.x;
+		const dy = e.clientY - lastPos.current.y;
+		lastPos.current = { x: e.clientX, y: e.clientY };
+
+		const canvas = canvasRef.current!;
+		const ratio = canvas.width / canvas.clientWidth;
+
+		setTransform((prev) => ({
+			...prev,
+			x: prev.x + dx * ratio,
+			y: prev.y + dy * ratio,
+		}));
+	}
+
+	function handleDragUp(e: React.PointerEvent<HTMLCanvasElement>) {
+		isDragging.current = false;
+	}
+
+	return <canvas ref={canvasRef} width={size} height={size} className="w-full h-auto cursor-move" onPointerDown={handleDragDown} onPointerMove={handleDragMove} onPointerUp={handleDragUp} />;
 }
