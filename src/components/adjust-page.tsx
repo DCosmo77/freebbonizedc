@@ -1,4 +1,4 @@
-import { Camera, SquareDimensions } from "lucide-react";
+import { Camera, CircleArrowRight } from "lucide-react";
 
 type TransformType = {
 	x: number;
@@ -49,8 +49,8 @@ export default function AdjustPageSidebar({ transform, setTransform, onPhotoSele
 				<div className="*:cursor-pointer bg-purple-700 p-5 relative text-white rounded-xl w-fit">
 					<button onClick={() => onGenerate("ready")} className="absolute inset-0 z-10 opacity-0" />
 					<h3 className="flex justify-center items-center gap-3">
-						<SquareDimensions />
-						Generate
+						<CircleArrowRight />
+						Next
 					</h3>
 				</div>
 				<div className="*:cursor-pointer border-purple-700 border p-5 relative text-purple-900 rounded-xl w-fit">

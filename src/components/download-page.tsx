@@ -9,11 +9,20 @@ function fillCaption(template: string, values: CaptionType) {
 	return template.replace(/\[(\w+)\]/g, (_, key) => values[key]?.trim() || `[${key}]`);
 }
 
-export default function DownloadPageSidebar() {
+export default function DownloadPageSidebar({ canvas }: { canvas: React.RefObject<HTMLCanvasElement> }) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [captionValues, setCapValues] = useState<CaptionType>(() => Object.fromEntries(captionProps.map((key) => [key, ""])));
 
 	const filledCaption = fillCaption(caption, captionValues);
+
+	function handleDownloadCanvas(canvas: React.RefObject<HTMLCanvasElement>, filename: string) {
+		if (!canvas.current) return;
+		const dataUrl = canvas.current.toDataURL("image/png");
+		const link = document.createElement("a");
+		link.href = dataUrl;
+		link.download = filename;
+		link.click();
+	}
 
 	return (
 		<section className="h-[24em] p-5 w-full relative flex flex-col gap-3 justify-between ">
@@ -52,7 +61,7 @@ export default function DownloadPageSidebar() {
 					</div>
 				</div>
 			</article>
-			<button className="flex items-center gap-2 font-semibold cursor-pointer bg-purple-700 p-5 text-white rounded-xl w-fit">
+			<button onClick={() => handleDownloadCanvas(canvas, "fancy-twibbon.png")} className="flex items-center gap-2 font-semibold cursor-pointer bg-purple-700 p-5 text-white rounded-xl w-fit">
 				<ArrowDownToLine />
 				Download Image
 			</button>

@@ -12,15 +12,15 @@ type CanvasProps = {
 	setTransform: React.Dispatch<React.SetStateAction<TransformType>>;
 	userPhoto: HTMLImageElement | null;
 	frameSrc: string;
+	canvasRef: React.RefObject<HTMLCanvasElement> | null;
 };
 
-export default function TwibbonCanvas({ userPhoto, transform, frameSrc, setTransform }: CanvasProps) {
+export default function TwibbonCanvas({ userPhoto, transform, frameSrc, setTransform, canvasRef }: CanvasProps) {
 	const size = 500;
-	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const frameRef = useRef(new Image());
 
 	function draw() {
-		const canvas = canvasRef.current;
+		const canvas = canvasRef?.current;
 		if (!canvas) return;
 
 		const ctx = canvas.getContext("2d");
