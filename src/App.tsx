@@ -3,6 +3,7 @@ import "./App.css";
 import TwibbonCanvas from "./components/twibbon-canvas";
 import LandingPageSidebar from "./components/landing-page";
 import AdjustPageSidebar from "./components/adjust-page";
+import DownloadPageSidebar from "./components/download-page";
 
 function App() {
 	const [sidebarState, setSidebarState] = useState<"landing" | "adjust" | "ready">("landing");
@@ -20,8 +21,11 @@ function App() {
 				<section className="w-96">
 					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} setTransform={setPhotoTransform} />
 				</section>
-				{sidebarState == "landing" && <LandingPageSidebar onPhotoSelected={handlePhotoSelected} />}
-				{sidebarState == "adjust" && <AdjustPageSidebar onPhotoSelected={handlePhotoSelected} transform={photoTransform} setTransform={setPhotoTransform} />}
+				<section className="w-lg">
+					{sidebarState == "landing" && <LandingPageSidebar onPhotoSelected={handlePhotoSelected} />}
+					{sidebarState == "adjust" && <AdjustPageSidebar onPhotoSelected={handlePhotoSelected} transform={photoTransform} setTransform={setPhotoTransform} onGenerate={setSidebarState} />}
+					{sidebarState == "ready" && <DownloadPageSidebar />}
+				</section>
 			</div>
 		</main>
 	);
