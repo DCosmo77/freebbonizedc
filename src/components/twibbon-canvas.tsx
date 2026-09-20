@@ -8,6 +8,7 @@ type TransformType = {
 };
 
 type CanvasProps = {
+	isEditMode: boolean;
 	transform: TransformType;
 	setTransform: React.Dispatch<React.SetStateAction<TransformType>>;
 	userPhoto: HTMLImageElement | null;
@@ -15,7 +16,7 @@ type CanvasProps = {
 	canvasRef: React.RefObject<HTMLCanvasElement> | null;
 };
 
-export default function TwibbonCanvas({ userPhoto, transform, frameSrc, setTransform, canvasRef }: CanvasProps) {
+export default function TwibbonCanvas({ userPhoto, transform, frameSrc, isEditMode, setTransform, canvasRef }: CanvasProps) {
 	const size = 500;
 	const frameRef = useRef(new Image());
 
@@ -48,12 +49,14 @@ export default function TwibbonCanvas({ userPhoto, transform, frameSrc, setTrans
 	const lastPos = useRef({ x: 0, y: 0 });
 
 	function handleDragDown(e: React.PointerEvent<HTMLCanvasElement>) {
+		if (!isEditMode) return;
 		isDragging.current = true;
 		lastPos.current = { x: e.clientX, y: e.clientY };
 		e.currentTarget.setPointerCapture(e.pointerId);
 	}
 
 	function handleDragMove(e: React.PointerEvent<HTMLCanvasElement>) {
+		if (!isEditMode) return;
 		if (!isDragging.current) return;
 
 		const dx = e.clientX - lastPos.current.x;
@@ -71,8 +74,9 @@ export default function TwibbonCanvas({ userPhoto, transform, frameSrc, setTrans
 	}
 
 	function handleDragUp(e: React.PointerEvent<HTMLCanvasElement>) {
+		if (!isEditMode) return;
 		isDragging.current = false;
 	}
 
-	return <canvas ref={canvasRef} width={size} height={size} className="w-full h-auto cursor-move" onPointerDown={handleDragDown} onPointerMove={handleDragMove} onPointerUp={handleDragUp} />;
+	return <canvas ref={canvasRef} width={size} height={size} className={`w-full h-auto ${isEditMode && "cursor-move"}`} onPointerDown={handleDragDown} onPointerMove={handleDragMove} onPointerUp={handleDragUp} />;
 }

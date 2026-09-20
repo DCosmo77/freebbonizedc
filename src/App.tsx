@@ -17,12 +17,12 @@ function App() {
 	}
 
 	return (
-		<main className="w-screen h-screen flex justify-center items-center">
-			<div className="h-fit flex p-20 justify-center gap-10 items-center">
-				<section className="w-96">
-					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} setTransform={setPhotoTransform} canvasRef={canvasRef} />
+		<main className="w-screen h-screen  flex justify-center items-center">
+			<div className="h-fit mx-auto flex md:flex-row flex-col p-8 justify-center gap-10 items-center">
+				<section className="md:w-96 w-72">
+					<TwibbonCanvas userPhoto={userPhoto} frameSrc={"/twibbon.png"} transform={photoTransform} setTransform={setPhotoTransform} isEditMode={sidebarState == "adjust"} canvasRef={canvasRef} />
 				</section>
-				<section className="w-lg">
+				<section className="max-w-lg">
 					{sidebarState == "landing" && <LandingPageSidebar onPhotoSelected={handlePhotoSelected} />}
 					{sidebarState == "adjust" && <AdjustPageSidebar onPhotoSelected={handlePhotoSelected} transform={photoTransform} setTransform={setPhotoTransform} onGenerate={setSidebarState} />}
 					{sidebarState == "ready" && <DownloadPageSidebar canvas={canvasRef} />}

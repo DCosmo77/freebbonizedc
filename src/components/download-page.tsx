@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowDownToLine, SquarePen, Copy } from "lucide-react";
+import { ArrowDownToLine, SquarePen, Clipboard, ClipboardCheck } from "lucide-react";
 import campaignData from "../campaign-data.json";
 
 type CaptionType = Record<string, string>;
@@ -12,6 +12,7 @@ function fillCaption(template: string, values: CaptionType) {
 export default function DownloadPageSidebar({ canvas }: { canvas: React.RefObject<HTMLCanvasElement> }) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [captionValues, setCapValues] = useState<CaptionType>(() => Object.fromEntries(captionProps.map((key) => [key, ""])));
+	const [isCopied, setIsCopied] = useState(false);
 
 	const filledCaption = fillCaption(caption, captionValues);
 
@@ -22,6 +23,14 @@ export default function DownloadPageSidebar({ canvas }: { canvas: React.RefObjec
 		link.href = dataUrl;
 		link.download = filename;
 		link.click();
+	}
+
+	function handleCopyCaption() {
+		setIsCopied(true);
+		navigator.clipboard.writeText(filledCaption);
+		setTimeout(() => {
+			setIsCopied(false);
+		}, 3000);
 	}
 
 	return (
@@ -44,24 +53,34 @@ export default function DownloadPageSidebar({ canvas }: { canvas: React.RefObjec
 					</div>
 				</div>
 			)}
+
 			<article>
-				<h1 className="text-4xl font-semibold mb-5">Ready to share!</h1>
+				<h1 className="lg:text-4xl text-2xl  font-semibold mb-5">Ready to share!</h1>
 				<div className="flex flex-col gap-3">
 					Caption:
 					<p className="p-2 border rounded-md border-gray-600/50">{filledCaption} </p>
-					<div className="flex *:grow gap-3  w-full">
-						<button onClick={() => navigator.clipboard.writeText(filledCaption)} className="bg-purple-700 text-white flex justify-center items-center p-3 gap-3 rounded-md  cursor-pointer">
-							<Copy />
-							Copy Caption
+					<div className="flex *:grow gap-3 text-xs lg:text-base w-full">
+						<button onClick={() => handleCopyCaption()} className="bg-purple-700 text-white flex justify-center items-center p-3 gap-2 rounded-md  cursor-pointer">
+							{isCopied ? (
+								<>
+									<ClipboardCheck />
+									Copied!
+								</>
+							) : (
+								<>
+									<Clipboard />
+									Copy Caption
+								</>
+							)}
 						</button>
-						<button onClick={() => setIsEdit(true)} className="bg-purple-700 text-white flex justify-center items-center p-3 gap-3 rounded-md  cursor-pointer">
+						<button onClick={() => setIsEdit(true)} className="bg-purple-700 text-white flex justify-center items-center p-3 gap-2 rounded-md  cursor-pointer">
 							<SquarePen />
 							Edit Caption
 						</button>
 					</div>
 				</div>
 			</article>
-			<button onClick={() => handleDownloadCanvas(canvas, "fancy-twibbon.png")} className="flex items-center gap-2 font-semibold cursor-pointer bg-purple-700 p-5 text-white rounded-xl w-fit">
+			<button onClick={() => handleDownloadCanvas(canvas, "fancy-twibbon.png")} className="flex items-center gap-2 font-semibold cursor-pointer bg-purple-700 p-5 text-white rounded-xl md:w-fit w-full">
 				<ArrowDownToLine />
 				Download Image
 			</button>

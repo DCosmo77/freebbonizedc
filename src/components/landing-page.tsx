@@ -13,7 +13,7 @@ export default function LandingPageSidebar({ onPhotoSelected }: { onPhotoSelecte
 	return (
 		<section className="h-[24em] p-5 w-full flex flex-col gap-3 justify-between ">
 			<article>
-				<h1 className="text-6xl font-semibold mb-5">FancyEvent Twibbon</h1>
+				<h1 className="lg:text-4xl text-2xl font-semibold mb-5">FancyEvent Twibbon</h1>
 				<p className="text-xl">Join our event and invite those around you to join in the fun!</p>
 			</article>
 			<div className="*:cursor-pointer bg-purple-700 p-5 relative text-white rounded-xl w-fit">
