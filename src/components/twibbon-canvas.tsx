@@ -13,7 +13,7 @@ type CanvasProps = {
 	setTransform: React.Dispatch<React.SetStateAction<TransformType>>;
 	userPhoto: HTMLImageElement | null;
 	frameSrc: string;
-	canvasRef: React.RefObject<HTMLCanvasElement> | null;
+	canvasRef: React.RefObject<HTMLCanvasElement | null>;
 };
 
 export default function TwibbonCanvas({ userPhoto, transform, frameSrc, isEditMode, setTransform, canvasRef }: CanvasProps) {
@@ -73,7 +73,7 @@ export default function TwibbonCanvas({ userPhoto, transform, frameSrc, isEditMo
 		}));
 	}
 
-	function handleDragUp(e: React.PointerEvent<HTMLCanvasElement>) {
+	function handleDragUp() {
 		if (!isEditMode) return;
 		isDragging.current = false;
 	}

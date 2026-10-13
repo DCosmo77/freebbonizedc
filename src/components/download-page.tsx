@@ -9,14 +9,14 @@ function fillCaption(template: string, values: CaptionType) {
 	return template.replace(/\[(\w+)\]/g, (_, key) => values[key]?.trim() || `[${key}]`);
 }
 
-export default function DownloadPageSidebar({ canvas }: { canvas: React.RefObject<HTMLCanvasElement> }) {
+export default function DownloadPageSidebar({ canvas }: { canvas: React.RefObject<HTMLCanvasElement | null> }) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [captionValues, setCapValues] = useState<CaptionType>(() => Object.fromEntries(captionProps.map((key) => [key, ""])));
 	const [isCopied, setIsCopied] = useState(false);
 
 	const filledCaption = fillCaption(caption, captionValues);
 
-	function handleDownloadCanvas(canvas: React.RefObject<HTMLCanvasElement>, filename: string) {
+	function handleDownloadCanvas(canvas: React.RefObject<HTMLCanvasElement | null>, filename: string) {
 		if (!canvas.current) return;
 		const dataUrl = canvas.current.toDataURL("image/png");
 		const link = document.createElement("a");
